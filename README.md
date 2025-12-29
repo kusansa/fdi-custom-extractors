@@ -1,44 +1,195 @@
-*This repository acts as a template for all of Oracle’s GitHub repositories. It contains information about the guidelines for those repositories. All files and sections contained in this template are mandatory, and a GitHub app ensures alignment with these guidelines. To get started with a new repository, replace the italic paragraphs with the respective text for your project.*
+# Custom Extractor SDK
 
-# Project name
+[**Oracle Fusion Data Intelligence Custom Extractor SDK**]() enables developers to create, test, and deploy custom extractors for Oracle Fusion Data Intelligence (FDI). The SDK provides an extensible framework and ready-to-use scaffolding for building extractors with custom business logic, helping organizations integrate diverse data sources efficiently.
 
-*Describe your project's features, functionality and target audience*
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Building](#building)
+- [Deployment](#deployment)
+- [Testing](#testing)
+- [Samples](#samples)
+- [Contributing](#contributing)
+- [Security](#security)
+- [License](#license)
+- [Changelog](#changelog)
+
+---
+
+## Features
+
+**Custom Extractor SDK** simplifies the development of data extractors that connect, query, and extract data from diverse sources into Oracle Fusion Data Intelligence.  
+Key capabilities include:
+
+- Ready-to-use Maven project scaffolding for rapid setup.
+- Support for custom data connection, authentication, and query logic.
+- Seamless integration with the Extract Service in FDI.
+- CLI tools for deploying and managing custom extractors in Remote Agent environments.
+- Sample extractors and templates for common data sources.
+
+---
+
+## Prerequisites
+
+1. **Oracle Fusion Data Intelligence Account**  
+   Access to FDI environment and Remote Agent.
+
+2. **Java & Maven**  
+   Ensure Java 11+ and Apache Maven are installed and configured.
+
+3. **SDK Package**  
+   Obtain the SDK ZIP archive from Oracle distribution.
+
+---
 
 ## Installation
 
-*Provide detailed step-by-step installation instructions. You can name this section **How to Run** or **Getting Started** instead of **Installation** if that's more acceptable for your project*
+1. Unzip the SDK archive:
 
-## Documentation
+    ```bash
+    unzip fdi-extractor-sdk-24.5.0-SNAPSHOT.zip
+    ```
 
-*Developer-oriented documentation can be published on GitHub, but all product documentation must be published on <https://docs.oracle.com>*
+2. Review the SDK contents:
 
-## Examples
+    ```text
+    install.sh
+    lib/
+    ```
 
-*Describe any included examples or provide a link to a demo/tutorial*
+3. Install the SDK:
 
-## Help
+    ```bash
+    sh install.sh
+    ```
 
-*Inform users on where to get help or how to receive official support from Oracle (if applicable)*
+---
+
+## Quick Start
+
+### Generate a New Custom Extractor Project
+
+Use Maven to scaffold a new extractor project:
+
+```bash
+mvn archetype:generate    -DarchetypeCatalog=internal    -DarchetypeGroupId=com.oracle.faw.extractservice    -DarchetypeArtifactId=extractservice-archetype    -DarchetypeVersion=24.5.0-SNAPSHOT    -DgroupId=oracle.apps.bi.extractservice.extract.impl    -DartifactId=customextract    -Dversion=1.0-SNAPSHOT
+```
+
+### Project Structure
+
+```text
+customextract
+├── pom.xml
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── oracle
+    │   │       └── apps
+    │   │           └── bi
+    │   │               └── extractservice
+    │   │                   └── extract
+    │   │                       └── impl
+    │   │                           ├── CustomApplication.java
+    │   │                           └── CustomExtractorImpl.java
+    │   └── resources
+    └── test
+        ├── java
+        │   └── oracle
+        │       └── apps
+        │           └── bi
+        │               └── extractservice
+        │                   └── extract
+        │                       └── impl
+        │                           └── ExtractorTest.java
+        └── resources
+            └── extractor_test.properties
+```
+
+---
+
+## Building
+
+Compile the project using Maven:
+
+```bash
+mvn clean install
+```
+
+This generates a JAR file in the `target` directory:
+
+```
+customextract-1.0-SNAPSHOT.jar
+```
+
+---
+
+## Deployment
+
+1. Copy the generated JAR to the Remote Agent directory:
+
+    ```bash
+    cp target/customextract-1.0-SNAPSHOT.jar /faw/software/custom-extractors/drivers-jar/
+    ```
+
+2. Restart the Remote Agent Docker container:
+
+    ```bash
+    sudo docker restart <remoteagent-container-name>
+    # Example
+    sudo docker restart remoteagent
+    ```
+
+---
+
+## Testing
+
+Update the `extractor_test.properties` file with your environment settings and run `ExtractorTest` to validate the extractor implementation.
+
+### Test Coverage
+
+- `getSourceType()`  
+- `verifyConnection()`  
+- `extractDataStores()`  
+- `queryData()`  
+
+### Example Reference
+
+Use the provided **COVID Extractor Sample** as a reference implementation for testing and configuration. Modify it to match your data source and logic.
+
+---
+
+## Samples
+
+Sample extractors are available under the [`samples`](./samples) directory. These can be used as templates for building new extractors or extended for different data sources.
+
+---
 
 ## Contributing
 
-*If your project has specific contribution requirements, update the CONTRIBUTING.md file to ensure those requirements are clearly explained*
+This project welcomes contributions from the community.  
+Before submitting a pull request, please review the [contribution guide](./CONTRIBUTING.md).
 
-This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
+---
 
 ## Security
 
-Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
+Please consult the [security guide](./SECURITY.md) for Oracle's responsible vulnerability disclosure process.
+
+---
 
 ## License
 
-*The correct copyright notice format for both documentation and software is*
-    "Copyright (c) [year,] year Oracle and/or its affiliates."
-*You must include the year the content was first released (on any platform) and the most recent year in which it was revised*
+© 2000–2024 Oracle and/or its affiliates. All rights reserved.
 
-Copyright (c) 2023 Oracle and/or its affiliates.
+This SDK is licensed under the **Universal Permissive License (UPL) 1.0**.  
+See [LICENSE.txt](./LICENSE.txt) for details.  
+For more information, visit [Oracle Open Source Licensing](https://oss.oracle.com/licenses/upl/).
 
-*Replace this statement if your project is not licensed under the UPL*
+---
 
-Released under the Universal Permissive License v1.0 as shown at
-<https://oss.oracle.com/licenses/upl/>.
+## Changelog
+
+For detailed version history and updates, please refer to [CHANGELOG.md](./CHANGELOG.md).
